@@ -1,0 +1,126 @@
+---
+title: "Quiz 12a"
+author: "Chenhang Huang"
+date: "2024-04-4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+knitr::opts_chunk$set(echo = TRUE)
+library(gh)
+library(rstanarm)
+```
+
+## Question 2 Simulate
+
+There are 4 variables in the dataset. 
+The simulate of the dataset are shows below:
+
+```{r}
+set.seed(302)
+
+hospital = c(rep("A",100),rep("B",80),rep("C",60),rep("D",50),rep("E",40))
+year= c(sample(c(2004:2023),100,replace = TRUE),sample(c(2004:2023),80,replace = TRUE),sample(c(2004:2023),60,replace = TRUE),sample(c(2004:2023),50,replace = TRUE),sample(c(2004:2023),40,replace = TRUE))
+cancer = sample(c(0,1),100+80+60+50+40,replace = TRUE, prob = c(0.3,0.7))
+
+id = c(1:(100+80+60+50+40))
+
+df = tibble(id = id,hospital = hospital,year = year, cancer = cancer)
+
+
+```
+
+
+
+
+
+10 tests:
+
+
+### 1 test 
+
+```{r}
+df$cancer |>
+  unique() == c(0 , 1)
+```
+
+
+### 2 test 
+
+```{r}
+df$cancer  |> class() == "numeric"
+```
+
+
+
+### 3 test 
+
+```{r}
+df$hospital |>
+  unique() == c( "A" , "B", "C","D","E" )
+```
+
+
+### 4 test
+
+```{r}
+df$id  |> class() == "integer"
+```
+
+
+
+### 5 test 
+
+```{r}
+df$year  |> class() == "integer"
+```
+
+
+### 6 test 
+
+```{r}
+df$year  |> min() == 2004
+```
+
+### 7 test 
+
+```{r}
+df$year  |> max() == 2023
+```
+
+
+
+### 8 test hospital A is the largest
+
+```{r}
+sum(data$hospital == "A")  > sum(data$hospital == "B") 
+```
+
+### 9 test hospital A is the largest
+
+```{r}
+sum(data$hospital == "A")  > sum(data$hospital == "C") 
+```
+
+
+### 10 test hospital A is the largest
+
+```{r}
+sum(data$hospital == "A")  > sum(data$hospital == "D") 
+```
+
+
+
+## Question 4
+```{r}
+
+
+model <- stan_glm(cancer ~ as.factor(hospital) + year, family = binomial(), data = data)
+summary(model)
+```
+
+
+
+
