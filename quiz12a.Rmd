@@ -114,6 +114,20 @@ sum(data$hospital == "A")  > sum(data$hospital == "D")
 
 
 ## Question 4
+
+```{r}
+rate = data %>%group_by(hospital,year) %>% summarize(proportion = mean(cancer))
+
+ggplot(rate, aes(x = year, y = proportion, color = hospital)) +
+  geom_line()
+
+```
+
+
+
+
+
+
 ```{r}
 
 
